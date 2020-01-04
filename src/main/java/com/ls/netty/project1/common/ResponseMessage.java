@@ -8,7 +8,7 @@ package com.ls.netty.project1.common;
  */
 public class ResponseMessage extends Message <OperationResult> {
     @Override
-    public Class getMessageBodyDecodeClass(int opcode) {
+    public Class getMessageBodyDecodeClass(int opcode) {//返回响应消息类型
         return OperationType.fromOpCode(opcode).getOperationResultClazz();
     }
 }

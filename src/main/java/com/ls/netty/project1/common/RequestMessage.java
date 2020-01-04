@@ -9,7 +9,7 @@ package com.ls.netty.project1.common;
 public class RequestMessage extends Message<Operation> {
     @Override
     public Class getMessageBodyDecodeClass(int opcode) {
-        return OperationType.fromOpCode(opcode).getOperationClazz();
+        return OperationType.fromOpCode(opcode).getOperationClazz();//返回请求消息类型
     }
 
     public RequestMessage(){}

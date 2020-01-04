@@ -33,19 +33,27 @@ public abstract class Message<T extends MessageBody> {
 
     //1、编码。把消息写入bytebuf
 
-    public void encode(ByteBuf byteBuf) {
+    public void encode(ByteBuf byteBuf) {//返回消息编码
         byteBuf.writeInt(messageHeader.getVersion());
-        byteBuf.writeInt(messageHeader.getOpCode());
         byteBuf.writeLong(messageHeader.getStreamId());
+        byteBuf.writeInt(messageHeader.getOpCode());
+
         byteBuf.writeBytes(JsonUtil.toJson(messageBody).getBytes());
     }
     //2、解码。从byteBuf解析出消息的内容到messageHeader和messageBody中
 
-    public void decode(ByteBuf msg) {
+    public void decode(ByteBuf msg) {//请求信息解码
         int version = msg.readInt();
-        int opCode = msg.readInt();
         long streamId = msg.readLong();
-        this.messageHeader = new MessageHeader(version,opCode,streamId);
+        int opCode = msg.readInt();
+
+        //this.messageHeader = new MessageHeader(version,opCode,streamId);
+        MessageHeader messageHeader = new MessageHeader();
+        messageHeader.setVersion(version);
+        messageHeader.setOpCode(opCode);
+        messageHeader.setStreamId(streamId);
+        this.messageHeader = messageHeader;
+
         //根据操作类型获取对应的解码实例
         Class<T> bodyClazz = getMessageBodyDecodeClass(opCode);
         T body = JsonUtil.fromJson(msg.toString(Charset.forName("UTF-8")), bodyClazz);

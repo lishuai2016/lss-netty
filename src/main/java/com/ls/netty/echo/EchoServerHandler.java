@@ -7,6 +7,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @program: lss-netty
  * @author: lishuai
  * @create: 2020-01-04 11:36
+ * ctx.write(msg)只是把信息放到队列中，并没有发送
  */
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
