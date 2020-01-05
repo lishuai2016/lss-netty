@@ -9,11 +9,14 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
  */
 
 public class OrderFrameDecoder extends LengthFieldBasedFrameDecoder {
-    public OrderFrameDecoder() {
-        super(Integer.MAX_VALUE,
-                0,
-                2,
-                0,
-                2);//去除头字段信息
-    }
+//    public OrderFrameDecoder() {
+//        super(Integer.MAX_VALUE,
+//                0,
+//                2,
+//                0,
+//                2);//去除头字段信息
+//    }
+public OrderFrameDecoder() {
+    super(10240, 0, 2, 0, 2);
+}
 }

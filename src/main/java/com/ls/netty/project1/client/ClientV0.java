@@ -53,6 +53,10 @@ public class ClientV0 {
             channelFuture.sync();//保证先建立了链接
 
             RequestMessage requestMessage = new RequestMessage(IdUtil.nextId(), new OrderOperation(1001, "tudou"));
+//模拟发送多次请求
+//            for (int i = 0; i < 20;i++) {
+//                channelFuture.channel().writeAndFlush(requestMessage);//发送信息。没有获取结果
+//            }
 
             channelFuture.channel().writeAndFlush(requestMessage);//发送信息。没有获取结果
 

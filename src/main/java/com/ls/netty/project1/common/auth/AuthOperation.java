@@ -17,12 +17,21 @@ public class AuthOperation extends Operation {
     private final String username;
     private final String password;
 
+//    @Override
+//    public OperationResult execute() {
+//        if ("admin".equalsIgnoreCase(this.username)) {//这里模拟简单的授权
+//            return new AuthOperationResult(true);
+//        } else {
+//            return new AuthOperationResult(false);
+//        }
+//    }
     @Override
-    public OperationResult execute() {
-        if ("admin".equalsIgnoreCase(this.username)) {//这里模拟简单的授权
-            return new AuthOperationResult(true);
-        } else {
-            return new AuthOperationResult(false);
+    public AuthOperationResult execute() {//返回值为子类
+        if ("admin".equalsIgnoreCase(this.username)) {
+            AuthOperationResult orderResponse = new AuthOperationResult(true);
+            return orderResponse;
         }
+
+        return new AuthOperationResult(false);
     }
 }

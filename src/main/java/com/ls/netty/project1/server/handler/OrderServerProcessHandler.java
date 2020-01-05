@@ -6,6 +6,7 @@ import com.ls.netty.project1.common.RequestMessage;
 import com.ls.netty.project1.common.ResponseMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @program: lss-netty
@@ -15,6 +16,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  *
  * SimpleChannelInboundHandler可以释放byteBUF
  */
+@Slf4j
 public class OrderServerProcessHandler extends SimpleChannelInboundHandler<RequestMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, RequestMessage requestMessage) throws Exception {
@@ -24,6 +26,13 @@ public class OrderServerProcessHandler extends SimpleChannelInboundHandler<Reque
         ResponseMessage responseMessage = new ResponseMessage();
         responseMessage.setMessageHeader(requestMessage.getMessageHeader());//设置消息头部
         responseMessage.setMessageBody(operationResult);
-        channelHandlerContext.writeAndFlush(responseMessage);//返回结果
+
+        //channelHandlerContext.writeAndFlush(responseMessage);//返回结果。有信息立即写回
+
+        if (channelHandlerContext.channel().isActive() && channelHandlerContext.channel().isWritable()) {
+            channelHandlerContext.writeAndFlush(responseMessage);
+        } else {
+            log.error("not writable now, message dropped");
+        }
     }
 }
